@@ -6,16 +6,18 @@
     "type": "git",
     "url": "git+ssh://git@github.com:kmamal/complex.git"
   },
-  "exports": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
   "scripts": {
-    "test": "./scripts/run-tests.sh",
+    "test": "npx -p @kmamal/testing testing",
     "update-exports": "node ./scripts/update-exports.mjs"
   },
   "license": "MIT",
   "dependencies": {
-    "@kmamal/util": "^0.1.7"
+    "@kmamal/util": "^0.2.1"
   },
   "devDependencies": {
-    "@kmamal/testing": "^0.0.21"
+    "@kmamal/testing": "^0.0.30"
   }
 }
