@@ -4,9 +4,9 @@
   "description": "complex",
   "repository": {
     "type": "git",
-    "url": "git@github.com:kmamal/complex.git"
+    "url": "git+ssh://git@github.com:kmamal/complex.git"
   },
-  "main": "src/index.js",
+  "exports": "./src/index.js",
   "scripts": {
     "test": "./scripts/run-tests.sh",
     "update-exports": "node ./scripts/update-exports.mjs"
