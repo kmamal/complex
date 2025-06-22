@@ -6,7 +6,7 @@ const _tmp1 = {}
 const _tmp2 = {}
 const _tmpNorm = {}
 
-const defineFor = memoize((Domain) => {
+const defineFor = memoize((Algebra) => {
 	const {
 		__info: { isPrimitive },
 		clone: _clone,
@@ -27,7 +27,7 @@ const defineFor = memoize((Domain) => {
 		eq: _eq,
 		neq: _neq,
 		gte: _gte,
-	} = Domain
+	} = Algebra
 
 	const _signTo = _sign.to
 	const _negTo = _neg.to
@@ -86,11 +86,17 @@ const defineFor = memoize((Domain) => {
 			re: norm(x),
 			im: _clone(_ZERO),
 		})
-	const absTo = (dst, x) => {
-		normTo(dst.re, x)
-		dst.im = _ZERO
-		return dst
-	}
+	const absTo = isPrimitive
+		?	(dst, x) => {
+			dst.re = norm(x)
+			dst.im = _ZERO
+			return dst
+		}
+		: (dst, x) => {
+			normTo(dst.re, x)
+			_copy(dst.im, _ZERO)
+			return dst
+		}
 	const abs$$$ = isPrimitive
 		? (x) => {
 			x.re = norm(x)
@@ -99,7 +105,7 @@ const defineFor = memoize((Domain) => {
 		}
 		: (x) => {
 			normTo(x.re, x)
-			x.im = _ZERO
+			_copy(x.im, _ZERO)
 			return x
 		}
 	abs.to = absTo
@@ -603,7 +609,7 @@ const defineFor = memoize((Domain) => {
 			dst.re = NaN
 			dst.im = NaN
 			return dst
-		 }
+		}
 		const { sre, sim } = match.groups
 
 		dst.re = _fromString(sre)
@@ -615,6 +621,7 @@ const defineFor = memoize((Domain) => {
 	const toString = (x) => `${x.re}${_gte(x.im, _ZERO) ? '+' : ''}${x.im}i`
 
 	return {
+		Algebra,
 		...{ isFinite, isNaN, isMember },
 		...{ re, im, clone, copy },
 		...{ abs, neg, conjugate, add, sub, mul, div, inverse, square, sqrt },
